@@ -103,9 +103,20 @@ select {
 }
 
 button {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
-  background: bisque;
+  background: #f5deb3;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+button:active {
+  transform: scale(0.9);
 }

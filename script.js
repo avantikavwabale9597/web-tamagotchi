@@ -39,3 +39,41 @@ document.getElementById("deviceColor").addEventListener("change", (e) => {
 document.getElementById("bgTheme").addEventListener("change", (e) => {
   document.body.style.background = bgThemes[e.target.value];
 });
+
+const actions = ["feed", "game", "health", "clean", "light"];
+let menuIndex = 0;
+
+function updateMenu() {
+  const items = document.querySelectorAll(".menu-item");
+  items.forEach((item, i) => {
+    item.classList.toggle("active", i === menuIndex);
+  });
+}
+
+function showInfo(text) {
+  const el = document.getElementById("infoText");
+  el.innerText = text;
+  setTimeout(() => {
+    el.innerText = "Select action";
+  }, 1200);
+}
+
+function moveLeft() {
+  menuIndex = (menuIndex - 1 + actions.length) % actions.length;
+  updateMenu();
+}
+
+function moveRight() {
+  menuIndex = (menuIndex + 1) % actions.length;
+  updateMenu();
+}
+
+function selectOption() {
+  const action = actions[menuIndex];
+
+  if (action === "feed") showInfo("Feeding....");
+  if (action === "game") showInfo("Playing....");
+  if (action === "health") showInfo("Healing....");
+  if (action === "clean") showInfo("Cleaning....");
+  if (action === "light") showInfo("Sleeping....");
+}
