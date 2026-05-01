@@ -5,6 +5,29 @@
     <title>Tamagotchi Web</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+  <body>
+    <div class="device" id="device">
+      <div class="screen">
+        <div class="screen-inner">
+          <div class="menu">
+            <img class="menu-item active" src="assets/menu/cutlery.png" />
+            <img class="menu-item" src="assets/menu/game-controller.png" />
+            <img class="menu-item" src="assets/menu/drugs.png" />
+            <img class="menu-item" src="assets/menu/shower.png" />
+            <img class="menu-item" src="assets/menu/light-bulb.png" />
+          </div>
 
-  <body></body>
+          <div class="info" id="infoText">Select action</div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button onclick="moveLeft()">A</button>
+        <button onclick="selectOption()">B</button>
+        <button onclick="moveRight()">C</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
