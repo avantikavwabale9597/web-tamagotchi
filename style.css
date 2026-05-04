@@ -40,8 +40,8 @@ select {
   border: none;
 }
 .device {
-  width: 290px;
-  height: 320px;
+  width: 310px;
+  height: 360px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -56,8 +56,8 @@ select {
 
 .screen {
   width: 180px;
-  height: 140px;
-  margin-top: 10px;
+  height: 210px;
+  margin-top: 1px;
   border-radius: 12px;
   padding: 10px;
   background: #cfcfcf;
@@ -67,6 +67,7 @@ select {
 }
 
 .screen-inner {
+  position: relative;
   flex: 1;
   border-radius: 6px;
   background: repeating-linear-gradient(
@@ -76,7 +77,66 @@ select {
     var(--screen-dark) 10px,
     var(--screen-dark) 20px
   );
-  padding: 6px;
+  overflow: hidden;
+}
+.game-container {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  flex-direction: column;
+}
+
+.game-title {
+  font-size: 10px;
+  text-align: center;
+  margin: 2px 0;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: calc(100% - 14px);
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.menu.hidden {
+  display: none;
+}
+
+.game-over {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.game-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.game-buttons button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+.info {
+  position: absolute;
+  bottom: 4px;
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  z-index: 2;
 }
 .menu {
   display: flex;

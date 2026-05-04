@@ -31,12 +31,25 @@
     <div class="device" id="device">
       <div class="screen">
         <div class="screen-inner">
-          <div class="menu">
+          <div class="menu" id="menu">
             <img class="menu-item active" src="assets/menu/cutlery.png" />
             <img class="menu-item" src="assets/menu/game-controller.png" />
             <img class="menu-item" src="assets/menu/drugs.png" />
             <img class="menu-item" src="assets/menu/shower.png" />
             <img class="menu-item" src="assets/menu/light-bulb.png" />
+          </div>
+
+          <div class="game-container" id="gameContainer">
+            <div class="game-title">TETRIS</div>
+            <canvas id="gameCanvas"></canvas>
+          </div>
+
+          <div id="gameOverUI" class="game-over">
+            <div>GAME OVER</div>
+            <div class="game-buttons">
+              <button onclick="restartGame()">↺</button>
+              <button onclick="exitGame()">✕</button>
+            </div>
           </div>
 
           <div class="info" id="infoText">Select action</div>
