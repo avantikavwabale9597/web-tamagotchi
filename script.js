@@ -1,5 +1,7 @@
 let paused = false;
 let showPauseMenu = false;
+let flashingLines = [];
+let clearingLines = false;
 
 const bgThemes = {
   lavendar:
@@ -181,25 +183,49 @@ function merge() {
 
 function clearLines() {
   let lines = [];
+
   grid.forEach((row, i) => {
-    if (row.every((c) => c)) lines.push(i);
+    if (row.every((cell) => cell === 1)) {
+      lines.push(i);
+    }
   });
 
-  if (!lines.length) return;
+  flashingLines = [...lines];
 
+  if (!lines.length) return false;
+
+  clearingLines = true;
   score += lines.length * 10;
 
-  grid = grid.filter((row) => row.some((c) => !c));
-  while (grid.length < ROWS) grid.unshift(Array(COLS).fill(0));
+  setTimeout(() => {
+    lines.sort((a, b) => b - a);
+
+    lines.forEach((lineIndex) => {
+      grid.splice(lineIndex, 1);
+      grid.unshift(Array(COLS).fill(0));
+    });
+
+    clearingLines = false;
+    flashingLines = [];
+    spawnPiece();
+  }, 300);
+
+  return true;
 }
 
 function update(ctx, canvas) {
+  if (clearingLines) {
+    draw(ctx, canvas);
+    return;
+  }
+
   piece.y++;
   if (collide()) {
     piece.y--;
     merge();
-    clearLines();
-    spawnPiece();
+    if (!clearLines()) {
+      spawnPiece();
+    }
   }
   draw(ctx, canvas);
 }
@@ -227,7 +253,11 @@ function draw(ctx, canvas) {
 
   ctx.fillText("SCORE", panelWidth / 2, 20);
   ctx.fillText(score, panelWidth / 2, 40);
-  ctx.fillText("⏸", panelWidth / 2, canvas.height - 10);
+  ctx.fillStyle = "#333";
+  ctx.fillRect(10, canvas.height - 35, panelWidth - 17, 25);
+
+  ctx.fillStyle = "white";
+  ctx.fillText("PAUSE", panelWidth / 2, canvas.height - 18);
 
   ctx.strokeStyle = "rgba(0,0,0,0.3)";
 
@@ -248,6 +278,10 @@ function draw(ctx, canvas) {
   ctx.fillStyle = "black";
 
   grid.forEach((row, y) => {
+    if (clearingLines && flashingLines.includes(y)) {
+      return;
+    }
+
     row.forEach((val, x) => {
       if (val) {
         ctx.fillRect(
@@ -286,7 +320,7 @@ function draw(ctx, canvas) {
 
 function gameOver() {
   clearInterval(gameLoop);
-  showPauseMenu = true;
+  document.getElementById("gameOverUI").style.display = "flex";
 }
 
 function restartGame() {
