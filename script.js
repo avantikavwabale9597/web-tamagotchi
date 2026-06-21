@@ -51,6 +51,7 @@ let inGame = false;
 
 let grid, piece, gameLoop;
 let score = 0;
+let gameSpeed = 400;
 
 const ROWS = 22;
 const COLS = 16;
@@ -146,6 +147,19 @@ function startTetris() {
     else draw(ctx, canvas);
   }, 400);
 }
+function updateGameSpeed() {
+  clearInterval(gameLoop);
+
+  gameSpeed = Math.max(100, 400 - Math.floor(score / 50) * 50);
+
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
+  gameLoop = setInterval(() => {
+    if (!paused) update(ctx, canvas);
+    else draw(ctx, canvas);
+  }, gameSpeed);
+}
 
 function spawnPiece() {
   const shape = shapes[Math.floor(Math.random() * shapes.length)];
@@ -196,6 +210,7 @@ function clearLines() {
 
   clearingLines = true;
   score += lines.length * 10;
+  updateGameSpeed();
 
   setTimeout(() => {
     lines.sort((a, b) => b - a);
@@ -253,6 +268,11 @@ function draw(ctx, canvas) {
 
   ctx.fillText("SCORE", panelWidth / 2, 20);
   ctx.fillText(score, panelWidth / 2, 40);
+
+  const level = Math.floor(score / 50) + 1;
+  ctx.fillText("LEVEL", panelWidth / 2, 60);
+  ctx.fillText(level, panelWidth / 2, 80);
+
   ctx.fillStyle = "#333";
   ctx.fillRect(10, canvas.height - 35, panelWidth - 17, 25);
 
@@ -320,19 +340,40 @@ function draw(ctx, canvas) {
 
 function gameOver() {
   clearInterval(gameLoop);
+  paused = true;
   document.getElementById("gameOverUI").style.display = "flex";
 }
 
 function restartGame() {
+  document.getElementById("gameOverUI").style.display = "none";
+
+  clearInterval(gameLoop);
+
   score = 0;
   paused = false;
   showPauseMenu = false;
+  clearingLines = false;
+  flashingLines = [];
+
   grid = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
   spawnPiece();
+
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
+  gameSpeed = 400;
+
+  gameLoop = setInterval(() => {
+    if (!paused) update(ctx, canvas);
+    else draw(ctx, canvas);
+  }, gameSpeed);
 }
 
 function exitGame() {
   clearInterval(gameLoop);
+
+  document.getElementById("gameOverUI").style.display = "none";
+
   document.getElementById("gameContainer").style.display = "none";
   document.getElementById("infoText").style.display = "block";
   document.querySelector(".menu").style.display = "flex";
